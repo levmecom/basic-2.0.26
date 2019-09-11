@@ -19,3 +19,5 @@ features to your application.
 
 
 <h1>访问levmecom目录进入安装界面</h1>
+
+<a href="https://github.com/levmecom/basic-2.0.26/releases">点此下载</a>
