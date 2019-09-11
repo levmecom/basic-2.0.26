@@ -1,0 +1,5 @@
+
+.wrap {padding-bottom: 10px !important;}
+.wrap > .container {
+    padding: 10px 15px 20px !important;
+}
