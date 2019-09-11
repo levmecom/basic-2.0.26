@@ -63,8 +63,8 @@ class Ucenter extends Widget
         $count = count(glob(\Yii::getAlias('@webroot').'/avatar/000000/1/*.jpg'));
 
         return is_file(\Yii::getAlias('@webroot').$dir.$uid.'.jpg') ? \Yii::getAlias('@web').$dir.$uid.'.jpg' :
-            ($dset ? \Yii::getAlias('@web').'/avatar/000000/1/'.($uid%$count).'.jpg' :
-                \Yii::getAlias('@web').'/avatar/000000/'.($uid%2).'.jpg');
+            ($dset && $count ? \Yii::getAlias('@web').'/avatar/000000/1/'.($uid%$count).'.jpg' :
+                \Yii::getAlias('@web').'/avatar/'.($uid%2).'.jpg');
     }
 
     /**
