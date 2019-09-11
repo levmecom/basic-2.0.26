@@ -19,7 +19,10 @@
 <div class="install-db setup2">
     <div class="sys-ck" style="height: 80px;">
         <?php Yii::$app->cache->set('baseModuleInstalling', Yii::$app->cache->get('baseModuleInstalling').$this->title.' => 安装完成！<br>', 120)?>
-        <div style="color: green;text-align: center;"><?=Yii::$app->cache->get('baseModuleInstalling')?></div>
+        <div style="color: green;text-align: center;">
+            <?=Yii::$app->cache->get('baseModuleInstalling')?>
+            <small><font color="red">正在安装，请耐心等候... ...</font></small><br>
+        </div>
     </div>
 </div>
 
