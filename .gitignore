@@ -14,7 +14,6 @@ Thumbs.db
 
 # composer vendor dir
 #/vendor
-/lotterys
 
 # composer itself is not needed
 composer.phar
@@ -32,3 +31,7 @@ tests/_support/_generated
 
 #vagrant folder
 /.vagrant
+
+
+# My configurations:
+bootstrap.php
