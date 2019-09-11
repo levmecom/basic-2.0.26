@@ -82,15 +82,15 @@ class Module extends \yii\base\Module
         return AdminModulesModel::deleteAll(['identifier'=>$moduleUniqueId]);
     }
 
-    public static function checkModuleInstalls($moduleUniqueId) {
-        self::checkModuleInstall('adminModules');
-        self::checkModuleInstall('navigation');
-        self::checkModuleInstall($moduleUniqueId);
+    public static function checkModuleInstalls($moduleUniqueId, $do = '') {
+        self::checkModuleInstall('adminModules', $do);
+        self::checkModuleInstall('navigation', $do);
+        self::checkModuleInstall($moduleUniqueId, $do);
     }
-    public static function checkModuleInstall($moduleUniqueId) {
+    public static function checkModuleInstall($moduleUniqueId, $do = '') {
 
         if (!self::checkInstallFile($moduleUniqueId) && stripos(\Yii::$app->request->getUrl(), 'admin-install') ===false) {
-            header('Location:'.\Yii::$app->homeUrl. $moduleUniqueId . '/admin-install');
+            header('Location:'.\Yii::$app->homeUrl. $moduleUniqueId . '/admin-install?do='.$do);
             exit();
         }
 

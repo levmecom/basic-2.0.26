@@ -68,16 +68,14 @@ class DefaultController extends Controller
     public function actionBaseModules() {
         IsSuperAdmin::checkSuperAdmin();
 
-        $this->layout = false;
-
-        \Yii::$app->cache->set('baseModulesInstalling', 1, 120);
+        $this->layout = '/yiimain';
 
         $baseModules = ['adminModules', 'navigation', 'ucenter', 'admin', 'uploads', 'forum'];
         foreach ($baseModules as $baseModule) {
-            adminModule::checkModuleInstalls($baseModule);
+            adminModule::checkModuleInstalls($baseModule, 'baseModuleInstall');
         }
 
-        \Yii::$app->cache->delete('baseModulesInstalling');
+        \Yii::$app->cache->delete('baseModuleInstalling');
 
         return $this->render('BaseModuleFinish');
     }

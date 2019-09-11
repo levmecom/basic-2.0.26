@@ -216,8 +216,8 @@ class IsSuperAdmin extends Behavior
 
         self::setInstallInfo($moduleUniqueId, $installLockFile, $model);
 
-        if (\Yii::$app->cache->get('baseModulesInstalling')) {
-            return \Yii::$app->controller->redirect(Url::toRoute(['/install/default/base-modules']));
+        if (\Yii::$app->request->get('do') == 'baseModuleInstall') {
+            return \Yii::$app->controller->getView()->render('@modules/install/views/default/baseModuleInstalling');
         }else {
             return levHelpers::showMessage('恭喜，安装完成！', \Yii::$app->homeUrl . $moduleUniqueId, 'success');
         }
