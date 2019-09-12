@@ -26,7 +26,7 @@ $userinfo = \app\modules\ucenter\widgets\Ucenter::userinfo();
         </div>
         <div class="center iframe-navbar">
             <div class="menu-item menu-item-dropdown adminTopNavPopoverOpen">
-                <div class="menu-item-content navnamebox">用户中心</div>
+                <div class="menu-item-content navnamebox"><i class="fa fa-th-large" aria-hidden="true"></i></div>
             </div>
             <a class="refresh-this"><i class="fa fa-home" aria-hidden="true"></i></a>
         </div>
@@ -88,7 +88,7 @@ $userinfo = \app\modules\ucenter\widgets\Ucenter::userinfo();
 
 <div id="iframe_x_box" class="list" style="background:#d5dfef;overflow: hidden;padding:0px;height:100%;margin:0;">
 
-    <iframe src="<?=Yii::$app->homeUrl?>ucenter"></iframe>
+    <iframe src="<?=Yii::$app->homeUrl?>adminModules/admin"></iframe>
 
 </div>
 
