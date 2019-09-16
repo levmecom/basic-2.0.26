@@ -30,6 +30,21 @@ if (F7app.device.ie) {
 	F7app.dialog.alert('', '抱歉，暂不支持IE内核浏览器！请换用chrome、firefox、edge等新一代主流浏览器');
 }
 
+Dom7('.treeview-item-selectable').on('click', function (e) {
+	var xtargetEl = Dom7(e.target);
+	if (xtargetEl.closest('.treeview-item-selected').length) return;
+	if (xtargetEl.is('.treeview-toggle')) return;
+	xtargetEl.parents('.treeview').find('.treeview-item-selected').removeClass('treeview-item-selected')
+	xtargetEl.closest('.treeview-item-selectable').addClass('treeview-item-selected')
+})
+jQuery('.treebox').on('dblclick', function () {
+	if (jQuery(this).hasClass('ht100')) {
+		jQuery(this).removeClass('ht100');
+	}else {
+		jQuery(this).addClass('ht100');
+	}
+});
+
 var __location__history = [];
 var loadTime = null;
 Dom7(document).on('taphold', '.preloader-modal', function () {
@@ -46,14 +61,6 @@ jQuery('.ptr-content').on('ptr:refresh', function (e) {
 	jQuery('.ptr-preloader').show();
 	window.location.reload();
 	//F7app.ptr.done();
-})
-
-jQuery(document).on('click', '.accordionItemTr .tree-name', function () {
-	if (jQuery(this).parents('.accordionItemTr').eq(0).hasClass('accordionItemTrOpen')) {
-		jQuery(this).parents('.accordionItemTr').eq(0).removeClass('accordionItemTrOpen');
-	}else {
-		jQuery(this).parents('.accordionItemTr').eq(0).addClass('accordionItemTrOpen');
-	}
 })
 
 //默认a标签可点击
@@ -136,13 +143,14 @@ function errortips(obj) {
 	}
 }
 
-function showFormErrors(data) {
+function showFormErrors(data, box) {
+	box = box ? box : '';
 	jQuery('errors').hide();
 	for (var key in data) {
-		if (jQuery('[name="'+ key +'"], #'+ key).parent().find('errors').html()) {
-			jQuery('[name="'+ key +'"], #'+ key).parent().find('errors').html(data[key]).show();
+		if (jQuery(box +'[name="'+ key +'"], #'+ key).parent().find('errors').html()) {
+			jQuery(box +'[name="'+ key +'"], #'+ key).parent().find('errors').html(data[key]).show();
 		}else {
-			jQuery('[name="'+ key +'"], #'+ key).parent().append('<errors>'+ data[key] +'</errors>');
+			jQuery(box +'[name="'+ key +'"], #'+ key).parent().append('<errors>'+ data[key] +'</errors>');
 		}
 	}
 	jQuery(document).on('change', 'input,textarea', function () {
@@ -153,7 +161,29 @@ function showFormErrors(data) {
 function levtoMao(val) {
 	var myY = jQuery("#"+val).offset().top;
 	jQuery("html,body").stop().animate({ scrollTop:myY},800);
-}    
+}
+
+function levtoMaoLeft(id, pid) {
+	var ztop = jQuery(id).offset().left;
+	var ctop = jQuery(pid).scrollLeft();
+	var myY = ztop + ctop;//console.log(ztop, ctop, myY);
+	jQuery(pid).stop().animate({scrollLeft : myY}, 300);
+}
+function levtoMaoTop(id, pid, pts, ts) {
+	ts = ts ? ts : 30;
+	var ztop = (pts ? jQuery(id).parents(pts).offset().top : jQuery(id).offset().top) - jQuery(pid).offset().top;
+	var ctop = jQuery(pid).scrollTop();
+	var myY = ztop + ctop;//console.log(ztop, ctop, myY, jQuery(pid));
+	jQuery(pid).stop().animate({scrollTop : myY}, ts);
+}
+
+function checkedToggle(toggleId, opid) {
+	if (jQuery(toggleId).prop('checked')) {
+		jQuery(opid).prop('checked', true);
+	}else {
+		jQuery(opid).prop('checked', false);
+	}
+}
 
 function dlevrandom(max, num){
 	var randarr = [];//从0－max随机取出不重复的数字；num取出个数

@@ -78,22 +78,22 @@ class installModule extends Migration
              * ENGINE=MyISAM
              * CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB
              */
-            $tableOptions = 'ENGINE=MyISAM';
+            $tableOptions = 'CHARACTER SET '.\Yii::$app->db->charset.' ENGINE=MyISAM';
         }
 
-        $this->createTable(' IF NOT EXISTS '.$this->LevTableName, [
+        $this->createTable($this->LevTableName, [
             'id' => $this->primaryKey()->unsigned(),
-            'moduleidentifier' => $this->string(220)->notNull()->defaultValue(''),
-            'title' => $this->string(255)->notNull()->defaultValue(''),
-            'placeholder' => $this->string(255)->notNull()->defaultValue(''),
-            'inputname' => $this->string(255)->notNull()->defaultValue(''),
-            'inputtype' => $this->string(255)->notNull()->defaultValue(''),
-            'inputvalue' => $this->string(255)->notNull()->defaultValue(''),
-            'settings' => $this->text()->notNull(),
-            'displayorder' => $this->smallInteger()->notNull()->defaultValue(0)->unsigned(),
-            'status' => $this->tinyInteger(2)->notNull()->defaultValue(0)->unsigned(),
-            'uptime' => $this->integer()->notNull()->defaultValue(0)->unsigned(),
-            'addtime' => $this->integer()->notNull()->defaultValue(0)->unsigned(),
+            'moduleidentifier' => $this->string(220)->notNull()->defaultValue('')->comment('模块标识符'),
+            'title' => $this->string(255)->notNull()->defaultValue('')->comment('标题'),
+            'placeholder' => $this->string(255)->notNull()->defaultValue('')->comment('提示语'),
+            'inputname' => $this->string(255)->notNull()->defaultValue('')->comment('输入框名'),
+            'inputtype' => $this->string(255)->notNull()->defaultValue('')->comment('输入框类型'),
+            'inputvalue' => $this->text()->notNull()->comment('输入框值'),
+            'settings' => $this->text()->notNull()->comment('通用设置'),
+            'displayorder' => $this->smallInteger()->notNull()->defaultValue(0)->unsigned()->comment('排序'),
+            'status' => $this->tinyInteger(2)->notNull()->defaultValue(0)->unsigned()->comment('状态'),
+            'uptime' => $this->integer()->notNull()->defaultValue(0)->unsigned()->comment('更新时间'),
+            'addtime' => $this->integer()->notNull()->defaultValue(0)->unsigned()->comment('添加时间'),
         ], $tableOptions);
 
         $this->createIndex('moduleidentifier', $this->LevTableName, ['moduleidentifier'], false);

@@ -95,6 +95,17 @@ class UcenterRegisters extends \yii\db\ActiveRecord
         return levHelpers::responseMsg(1, '【'.$types['name'].'】成功注册：'.$count.'/'.$rcount);
     }
 
+    public static function getUsersByTypeName($typeName) {
+        $typeinfo = static::find()->where(['=', 'uid', 0])->andWhere(['like', 'name', $typeName])->select(['id'])->asArray()->one();
+        if (isset($typeinfo['id'])) {
+            return self::getUsersByTypeid($typeinfo['id']);
+        }
+        return [];
+    }
+    public static function getUsersByTypeid($typeid) {
+        return static::find()->where(['typeid'=>$typeid])->select(['uid'])->asArray()->all();
+    }
+
     /**
      * {@inheritdoc}
      */

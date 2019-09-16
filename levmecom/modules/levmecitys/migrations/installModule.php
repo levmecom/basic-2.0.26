@@ -45,14 +45,18 @@ class installModule extends Migration
     public function insertData()
     {
         //村数据太大自行移动table目录文件到数据库
-        ini_set('memory_limit', '256M');
-        $rows = include_once 'data/rows.php';
-        foreach ($rows[0] as $field => $v) {
-            $columns[] = $field;
-        }
-        $chunk = array_chunk($rows, 3000);//print_r($chunk);
-        foreach ($chunk as $rows) {
-            $this->batchInsert($this->LevTableName, $columns, $rows);
+        if (is_file(\Yii::getAlias('@app').'/modules/levmecitys/migrations/data/rows.php')) {
+            ini_set('memory_limit', '256M');
+            $rows = include_once \Yii::getAlias('@app').'/modules/levmecitys/migrations/data/rows.php';
+            if ($rows) {
+                foreach ($rows[0] as $field => $v) {
+                    $columns[] = $field;
+                }
+                $chunk = array_chunk($rows, 3000);//print_r($chunk);
+                foreach ($chunk as $rows) {
+                    $this->batchInsert($this->LevTableName, $columns, $rows);
+                }
+            }
         }
     }
 
@@ -61,10 +65,10 @@ class installModule extends Migration
         Navigation::setModuleNavs([//前台主导航
         ]);
         Navigation::setModuleAdminNavs([//后台管理左侧 - 【提示】后台管理只能有一个一级导航无数个子导航
-//            'name'=>'批量注册',
-//           '_editName'=>'批量注册', //用于修改导航名称
-//           'link'=>'ucenter/registers/admin',
-//           'icon'=>'fa-user-plus',
+            'name'=>'地区设置',
+           '_editName'=>'', //用于修改导航名称
+           'link'=>'levmecitys/admingii',
+           'icon'=>'fa-list',
 //           '_position'=>['name'=>'分类', '_editName'=>'分类', 'link'=>'ucenter/registers/admin/type', 'icon'=>''], //一个
 //            '_child'=>[
 //                ['name'=>'分类22', '_editName'=>'', 'link'=>'ucenter/registers/admin/type', 'icon'=>'fa-user-plus',
@@ -90,22 +94,22 @@ class installModule extends Migration
              * ENGINE=MyISAM
              * CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB
              */
-            $tableOptions = 'ENGINE=MyISAM';
+            $tableOptions = 'CHARACTER SET '.\Yii::$app->db->charset.' ENGINE=MyISAM';
         }
 
-        $this->createTable(' IF NOT EXISTS '.$this->LevTableName, [
+        $this->createTable($this->LevTableName, [
             'id' => $this->primaryKey()->unsigned(),
             'pid' => $this->integer()->notNull()->defaultValue(0)->unsigned(),
-            'code' => $this->string(32)->notNull()->defaultValue(''),
-            'name' => $this->string(80)->notNull()->defaultValue(''),
-            'streetCode' => $this->string(32)->notNull()->defaultValue(''),
-            'provinceCode' => $this->string(32)->notNull()->defaultValue(''),
-            'cityCode' => $this->string(32)->notNull()->defaultValue(''),
-            'areaCode' => $this->string(32)->notNull()->defaultValue(''),
-            'displayorder' => $this->smallInteger()->notNull()->defaultValue(0)->unsigned(),
-            'status' => $this->tinyInteger(2)->notNull()->defaultValue(0)->unsigned(),
-            'uptime' => $this->integer()->notNull()->defaultValue(0)->unsigned(),
-            'addtime' => $this->integer()->notNull()->defaultValue(0)->unsigned(),
+            'code' => $this->string(32)->notNull()->defaultValue('')->comment('编码'),
+            'name' => $this->string(80)->notNull()->defaultValue('')->comment('名称'),
+            'streetCode' => $this->string(32)->notNull()->defaultValue('')->comment('街道编码'),
+            'provinceCode' => $this->string(32)->notNull()->defaultValue('')->comment('省市编码'),
+            'cityCode' => $this->string(32)->notNull()->defaultValue('')->comment('城市编码'),
+            'areaCode' => $this->string(32)->notNull()->defaultValue('')->comment('县城编码'),
+            'displayorder' => $this->smallInteger()->notNull()->defaultValue(0)->unsigned()->comment('排序'),
+            'status' => $this->tinyInteger(2)->notNull()->defaultValue(0)->unsigned()->comment('状态'),
+            'uptime' => $this->integer()->notNull()->defaultValue(0)->unsigned()->comment('更新时间'),
+            'addtime' => $this->integer()->notNull()->defaultValue(0)->unsigned()->comment('添加时间'),
         ], $tableOptions);
 
         $this->createIndex('code', $this->LevTableName, ['code'], false);

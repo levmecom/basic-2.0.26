@@ -6,4 +6,7 @@ return [
     'senderName' => 'Example.com mailer',
 
     'SiteName' => 'Levme.com',
+
+    //设计模式
+    'developing' => true,
 ];

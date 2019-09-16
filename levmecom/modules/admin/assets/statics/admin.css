@@ -28,16 +28,17 @@ html.with-panel-left-cover .framework7-root .view {width:calc(100% - 230px);tran
 
 #iframe_x_box iframe {width: 100%;height:calc(100% - 0px);border: 0;margin: 0;}
 
-
+.add-tr-var-box input, .add-tr-var-box select,
 .tab-center.wd60 input {
     background: rgba(0,0,0,0.03);border: 1px solid rgba(0,0,0,0.01);
-    text-align: center;
-    width: 60px !important;
     border-radius: 2px;
     color: gray;
     font-size: 12px;
     height: 100%;
 }
+.add-tr-var-box input {max-width: 140px;}
+.tab-center.wd60 input {width: 50px !important;text-align: center;}
+.add-tr-var-box tr:not(.add-tr-var-input) errors {display: none;}
 
 .iframe-navbar {position: relative;}
 .iframe-navbar .refresh-this .fa {
@@ -156,5 +157,17 @@ a.button:hover {color: #ecaa2c !important;}
 
 .adminbar form .date-search-box .button.button-active {background: #007aff;}
 
-
-
+.checkbox-list {
+    height: 120px;
+    overflow: hidden;
+    overflow-y: auto;background: rgba(0,0,0,0.03);
+    border: 1px solid rgba(0,0,0,0.05);
+    padding: 5px;
+}
+.checkbox-list label {
+    cursor: pointer;font-weight: normal;
+    width: 100%;
+}
+.checkbox-list label:hover {
+    background: rgba(0,0,0,0.04);
+}

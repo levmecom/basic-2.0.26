@@ -9,8 +9,12 @@
  * 作者：liwei  Levme.com <675049572@qq.com>
  */
 
+use levmecom\aalevme\levHelpers;
 use yii\helpers\Url;
 
+/*
+ * 自定义navbar $this->blocks['navbar'] = '自定义内容';
+ */
 ?>
 
 <?php if (Yii::$app->request->get('add')) : ?>
@@ -34,12 +38,20 @@ use yii\helpers\Url;
                     </a>
                 </div>
                 <div class="item-text">
-                    <a class="link tooltip-init" href="<?=Url::toRoute(['/'.Url::to('admin/default/settings'), 'identifier'=>Yii::$app->controller->module->uniqueId])?>" data-tooltip="模块设置">
+                    <a class="link tooltip-init" href="
+
+                <?php if (levHelpers::arrv('settingshref', $this->blocks, '')) : ?>
+                    <?=$this->blocks['settingshref']?>
+                <?php else: ?>
+                    <?=Url::toRoute(['/'.Url::to('admin/default/settings'), 'identifier'=>Yii::$app->controller->module->uniqueId])?>
+                <?php endif; ?>
+
+" data-tooltip="模块设置">
                         <i class="fa fa-gear fa-spin fa-fw" aria-hidden="true"></i>
                     </a>
                 </div>
 
-                <div class="item-text"><a class="link tooltip-init external" target="_blank" data-tooltip="访问前台" href="<?=Yii::$app->homeUrl.str_ireplace('/admin', '', \Yii::$app->controller->uniqueId)?>"><i class="fa fa-external-link-square" aria-hidden="true"></i></a></div>
+                <div class="item-text"><a class="link tooltip-init external" target="_blank" data-tooltip="访问前台" href="<?=Url::toRoute(['/'.Yii::$app->controller->module->uniqueId])?>"><i class="fa fa-external-link-square" aria-hidden="true"></i></a></div>
 
                 <?php if (isset($this->blocks['addhref']) && $this->blocks['addhref']) : ?>
                 <?php $this->blocks['addhref'] = $this->blocks['addhref'] ===true ? Url::current(['add'=>1]) : $this->blocks['addhref']?>

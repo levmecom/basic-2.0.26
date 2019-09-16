@@ -43,7 +43,17 @@ class ForumForums extends \yii\db\ActiveRecord
     }
 
     public static function forums() {
-        return static::find()->indexBy('id')->asArray()->all();
+        return static::find()->indexBy('id')->orderBy(['displayorder'=>SORT_ASC, 'id'=>SORT_ASC])->asArray()->all();
+    }
+
+    public static function getForumByCode($code) {
+        return static::find()->where(['code'=>$code])->asArray()->one();
+    }
+    public static function getForumById($id) {
+        return static::find()->where(['id'=>$id])->asArray()->one();
+    }
+    public static function getForumByName($name) {
+        return static::find()->where(['like', 'name', $name])->asArray()->one();
     }
 
     /**

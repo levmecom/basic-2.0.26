@@ -35,6 +35,7 @@ class Module extends \yii\base\Module
         $dirs = FileHelper::findDirectories(dirname(__DIR__));
         $res = [];
         foreach ($dirs as $dir) {
+            $dir = str_ireplace('\\', '/', $dir);
             $mdir = stristr($dir, 'modules/');
             $drcount = substr_count($mdir, '/');
             $dmcount = substr_count($mdir, 'modules/');

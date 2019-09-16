@@ -81,7 +81,7 @@ class installModule extends Migration
              * ENGINE=MyISAM
              * CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB
              */
-            $tableOptions = 'ENGINE=MyISAM';
+            $tableOptions = 'CHARACTER SET '.\Yii::$app->db->charset.' ENGINE=MyISAM';
         }
 
         $this->createTable(' IF NOT EXISTS '.$this->LevTableName, [

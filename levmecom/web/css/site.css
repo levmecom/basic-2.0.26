@@ -116,7 +116,7 @@ a.desc:after {
     outline: none;
 }
 
-.form-control {border: 1px solid #ccc !important;border-radius: 4px !important;}
+.form-control {border: 1px solid #ccc !important;border-radius: 4px !important;padding-left:7px !important;}
 .has-success .form-control {
     border-color: #3c763d !important;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075)  !important;

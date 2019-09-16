@@ -12,6 +12,7 @@
 
 namespace levmecom\modules\forum\widgets;
 
+use app\modules\forum\models\ForumForums;
 use app\modules\forum\models\Threads;
 use app\modules\ucenter\models\User;
 use levmecom\aalevme\levHelpers;
@@ -39,11 +40,22 @@ class threadList extends Widget
         $fid = intval(Yii::$app->request->get('fid'));
 
         $where = ['pid'=>0, 'status'=>0];
+        $andWhere = [];
         if ($fid) {
-            $where['fid'] = $fid;
+            $fids[] = $fid;
+            $forums = ForumForums::find()->where(['pid'=>$fid])->asArray()->all();
+            foreach ($forums as $v) {
+                $fids[] = $v['id'];
+            }
+            $andWhere = ['in', 'fid', $fids];
+        }else {
+            if (Yii::$app->user->isGuest) {
+                $loginshow = json_decode(levHelpers::stget('loginshow', 'forum'), true);
+                if ($loginshow) $andWhere = ['not in', 'fid', $loginshow];
+            }
         }
 
-        $threadList = $model->find()->where($where)->with('replyList', 'attachs')->orderBy(['id'=>SORT_DESC])
+        $threadList = $model->find()->where($where)->andFilterWhere($andWhere)->with('replyList', 'attachs')->orderBy(['id'=>SORT_DESC])
                             ->offset($offset)->limit($limit)->asArray()->all();//print_r($threadList);exit;
 
         $insql = levHelpers::inSql($threadList, 'uid,touid', 'replyList');

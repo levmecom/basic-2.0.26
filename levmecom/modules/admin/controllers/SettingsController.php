@@ -5,6 +5,7 @@ namespace app\modules\admin\controllers;
 use Yii;
 use app\modules\admin\models\SettingsModel;
 use app\modules\admin\models\SettingsSearch;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -41,13 +42,15 @@ class SettingsController extends Controller
         if (Yii::$app->request->post('adminop')) {
             switch (Yii::$app->request->post('adminop')) {
                 case 'setStatus' : $tips = IsSuperAdmin::setStatus(SettingsModel::tableName()); break;
-                case 'setField'  : $tips = IsSuperAdmin::setField(SettingsModel::tableName()); break;
-                case 'deleteDay' : $tips = IsSuperAdmin::adminDayDelete(SettingsModel::tableName()); break;
-                case 'deleteIds' : $tips = IsSuperAdmin::adminDelete(SettingsModel::tableName()); break;
+                case 'setField'  : $tips = SettingsModel::setField(); break;
+                case 'deleteDay' : $tips = IsSuperAdmin::adminDayDelete(SettingsModel::tableName()); SettingsModel::setCaches(); break;
+                case 'deleteIds' : $tips = IsSuperAdmin::adminDelete(SettingsModel::tableName()); SettingsModel::setCaches(); break;
             }
             if (isset($tips)) {
                 return $tips;
             }
+        }elseif (Yii::$app->request->post('addvar')) {
+            return json_encode(SettingsModel::addvar());
         }
 
         $searchModel = new SettingsSearch();
@@ -81,8 +84,11 @@ class SettingsController extends Controller
     {
         $model = new SettingsModel();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->addtime = time();
+            if ($model->save()) {
+                return $this->redirect(Url::current(['index', 'add'=>'']));
+            }
         }
 
         return $this->render('create', [
@@ -102,7 +108,7 @@ class SettingsController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(Url::current(['index', 'id'=>'']));
         }
 
         return $this->render('update', [

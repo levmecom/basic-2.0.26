@@ -31,7 +31,7 @@ if (!($pid = Yii::$app->request->get('id'))) {
                 </div>
                 <div class="item-after"><a class="item-link">
                     <i class="fa fa-commenting" aria-hidden="true"></i>
-                        <span><?=\Yii::$app->formatter->asShortWeight($counts)?></span>
+                        <span><?=\Yii::$app->formatter->asShortSize($counts)?></span>
                     </a>
                 </div>
                 <div class="item-after">

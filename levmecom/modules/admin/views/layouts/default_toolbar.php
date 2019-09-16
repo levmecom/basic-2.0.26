@@ -51,8 +51,9 @@ use yii\helpers\Url;
                         <div class="box">
                             <?php if (isset($this->blocks['pageSize'])) :?>
                             <div class="input input-dropdown">
-                                <select name="setPageSize" onchange="window.location='<?=\yii\helpers\Url::current(['setPageSize'=>''])?>'+this.value">
+                                <select name="setPageSize" onchange="window.location='<?=Url::current(['setPageSize'=>''])?>'+this.value">
                                     <option value="10">显示10条</option>
+                                    <option value="15">显示15条</option>
                                     <option value="20">显示20条</option>
                                     <option value="30">显示30条</option>
                                     <option value="40">显示40条</option>

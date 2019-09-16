@@ -36,7 +36,7 @@ class AdminController extends Controller
             switch (Yii::$app->request->post('adminop')) {
                 case 'setStatus' : $tips = IsSuperAdmin::setStatus(Threads::tableName()); break;
                 case 'setField'  : $tips = IsSuperAdmin::setField(Threads::tableName()); break;
-                case 'deleteDay' : $tips = IsSuperAdmin::adminDayDelete(Threads::tableName(), ' uid=0 AND '); break;
+                case 'deleteDay' : $tips = IsSuperAdmin::adminDayDelete(Threads::tableName()); break;
                 case 'deleteIds' : $tips = IsSuperAdmin::adminDelete(Threads::tableName()); break;
             }
             if (isset($tips)) {
@@ -73,7 +73,7 @@ class AdminController extends Controller
             switch (Yii::$app->request->post('adminop')) {
                 case 'setStatus' : $tips = IsSuperAdmin::setStatus(ForumForums::tableName()); break;
                 case 'setField'  : $tips = IsSuperAdmin::setField(ForumForums::tableName()); break;
-                case 'deleteDay' : $tips = IsSuperAdmin::adminDayDelete(ForumForums::tableName(), ' uid=0 AND '); break;
+                case 'deleteDay' : $tips = IsSuperAdmin::adminDayDelete(ForumForums::tableName()); break;
                 case 'deleteIds' : $tips = IsSuperAdmin::adminDelete(ForumForums::tableName()); break;
             }
             if (isset($tips)) {

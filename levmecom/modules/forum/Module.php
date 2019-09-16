@@ -45,7 +45,7 @@ class Module extends \yii\base\Module
             $excepts = ForumForums::find()->where("code IN ($insql)")->indexBy('code')->asArray()->all();
             if ($excepts) {
                 foreach ($rows as $k => $v) {
-                    if ($excepts[$v['code']]) unset($rows[$k]);
+                    if (isset($excepts[$v['code']])) unset($rows[$k]);
                 }
             }
         }

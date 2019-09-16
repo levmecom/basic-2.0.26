@@ -68,7 +68,7 @@ $users = \app\modules\ucenter\models\User::userByuids($lists);
 <?php $this->endBlock()?>
 
 <div class="data-table data-table-init card">
-    <form name="dataTableForm" action="<?=Yii::$app->homeUrl?>admin/default/admin-delete">
+    <form name="dataTableForm" action="">
         <input type="hidden" name="<?=Yii::$app->request->csrfParam?>" value="<?=Yii::$app->request->csrfToken?>">
         <div class="card-content">
             <table>

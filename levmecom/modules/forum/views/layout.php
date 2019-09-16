@@ -9,7 +9,9 @@
  * 作者：liwei  Levme.com <675049572@qq.com>
  */
 
+use app\modules\forum\models\ForumForums;
 use app\modules\ucenter\widgets\Ucenter;
+use levmecom\aalevme\levHelpers;
 use levmecom\modules\forum\widgets\sendThread;
 use levmecom\modules\forum\widgets\threadList;
 
@@ -17,8 +19,31 @@ use levmecom\modules\forum\widgets\threadList;
 
 $userinfo = Ucenter::userinfo();
 
-$forums = \app\modules\forum\models\ForumForums::find()->where(['rootid'=>0])->orderBy(['displayorder'=>SORT_ASC])->indexBy('id')->asArray()->all();
+$fid = intval(Yii::$app->request->get('fid')) ?: 0;
 
+if (Yii::$app->user->isGuest) {
+    $loginshow = json_decode(levHelpers::stget('loginshow', 'forum'), true);
+}
+
+$forums = ForumForums::find()->where(['status'=>0])->orderBy(['displayorder'=>SORT_ASC])->indexBy('id')->asArray()->all();
+foreach ($forums as $v) {
+    if (isset($loginshow) && in_array($v['id'], $loginshow)) continue;
+    $pforums[$v['pid']][$v['id']] = $v;
+}
+
+if (isset($forums[$fid])) {
+    if (isset($pforums[$fid])) {
+        $_forums[$fid] = isset($forums[$fid]) ? $forums[$fid] : [];
+        $forums = $_forums + $pforums[$fid];
+    } elseif (isset($forums[$fid]['pid']) && isset($pforums[$forums[$fid]['pid']])) {
+        $pid = $forums[$fid]['pid'];
+        $_forums[$pid] = isset($forums[$pid]) ? $forums[$pid] : [];
+        $forums = $_forums + $pforums[$pid];
+    }
+}else {
+    ksort($pforums);
+    $forums = reset($pforums);
+}
 ?>
 
 <?php $this->beginBlock('navbar') ?>
@@ -28,10 +53,10 @@ $forums = \app\modules\forum\models\ForumForums::find()->where(['rootid'=>0])->o
             <div class="item-text">
                 <a href="<?=Yii::$app->homeUrl?>">
                     <img src="<?=Yii::$app->homeUrl?>statics/mobileIcon.png" class="logo">
-                    <h2>Levme.com</h2>
+                    <h2><?=Yii::$app->params['SiteName']?></h2>
                 </a>
                 <a class="link" href="<?=Yii::$app->homeUrl?>">首页</a>
-                <?php if ($fid = intval(Yii::$app->request->get('fid'))) :?>
+                <?php if ($fid) :?>
                     <a class="link oned" href="<?=Yii::$app->homeUrl?>forum/<?=$forums[$fid]['id']?>"><?=$forums[$fid]['name']?></a>
                 <?php endif;?>
                 <?php foreach ($forums as $v) : ?>

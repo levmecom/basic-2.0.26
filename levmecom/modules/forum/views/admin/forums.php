@@ -15,7 +15,6 @@ use app\modules\forum\models\ForumForums;
 use yii\data\Pagination;
 
 $this->title = '论坛版块管理';
-$this->blocks['optable'] = ForumForums::tableName();
 
 $this->blocks['tips'] = '';
 
@@ -30,9 +29,9 @@ $this->blocks['dateSearch'] = 'addtime';
 
 $where = isset($where) && $where ? $where : '';
 
-$topForums = ForumForums::find()->where(['rootid'=>0])->indexBy('id')->orderBy(['displayorder'=>SORT_ASC])->asArray()->all();
+$topForums = ForumForums::find()->where(['rootid'=>0])->indexBy('id')->orderBy(['displayorder'=>SORT_ASC, 'id'=>SORT_ASC])->asArray()->all();
 
-$forums = ForumForums::find()->where($where)->indexBy('id')->orderBy(['displayorder'=>SORT_ASC])->asArray()->all();
+$forums = ForumForums::find()->where($where)->indexBy('id')->orderBy(['displayorder'=>SORT_ASC, 'id'=>SORT_ASC])->asArray()->all();
 
 $lists = ForumForums::find()->indexBy('id')->orderBy(['displayorder'=>SORT_ASC])->asArray()->all();
 
@@ -60,9 +59,8 @@ $srh = Yii::$app->request->get('srh');
 
 <div class="data-table data-table-init card">
 
-    <form name="dataTableForm" action="<?=Yii::$app->homeUrl?>admin/default/admin-delete">
+    <form name="dataTableForm" action="">
         <input type="hidden" name="<?=Yii::$app->request->csrfParam?>" value="<?=Yii::$app->request->csrfToken?>">
-        <input type="hidden" name="optable" value="<?=$this->blocks['optable']?>">
     <div class="card-content">
         <div class="list accordion-list">
             <ul><li class="searchbar-ignore">
@@ -76,6 +74,7 @@ $srh = Yii::$app->request->get('srh');
                 <th class="checkbox-cell"><label class="checkbox"><input name="ids[]" type="checkbox"><i class="icon-checkbox"></i></label></th>
                 <th class="tab-center wd60"><input class="dorder" type="text" value="排序" disabled></th>
                 <th class="tab-center wd100">版块ID</th>
+                <th class="tab-center wd60">子版块</th>
                 <th class="tab-center wd100">Code</th>
                 <th class="numeric-cell wd100">数据量</th>
                 <th class="tab-center wd60">状态</th>
@@ -87,7 +86,7 @@ $srh = Yii::$app->request->get('srh');
         </div></li>
             </ul>
             <ul class="search-list searchbar-found">
-            <?=\levmecom\widgets\tree\tree::widget(['data'=>$forums, 'template' => '@app/modules/forum/views/admin/forumsTree'])?>
+            <?= \levmecom\widgets\tree\tree::widget(['data'=>$forums, 'template' => '@app/modules/forum/views/admin/forumsTree'])?>
             </ul>
         </div>
     </div>

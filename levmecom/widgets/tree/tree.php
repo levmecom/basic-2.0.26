@@ -21,6 +21,10 @@ class tree extends Widget
 
     public $child = [];
 
+    public $inputname = '';
+    public $values = '';
+    public $key = 'id';//默认保存id值
+
     public $ischild = false;
 
     public $template = 'tree';
@@ -33,10 +37,10 @@ class tree extends Widget
             $this->dataInit();//print_r($this->top);echo 'sdf';print_r($this->notop);exit;
         }
 
-        $treehtm = $this->render($this->template, ['top'=>$this->top, 'child'=>$this->child, 'template'=>$this->template, 'ischild'=>$this->ischild]);
+        $treehtm = $this->render($this->template, ['top'=>$this->top, 'child'=>$this->child, 'template'=>$this->template, 'ischild'=>$this->ischild, 'inputname'=>$this->inputname, 'values'=>$this->values, 'key'=>$this->key]);
 
         if ($this->notop) {
-            $treehtm.= $this->render($this->template, ['top'=>$this->notop, 'child'=>$this->child, 'template'=>$this->template, 'ischild'=>$this->ischild, 'notophead'=>true]);
+            $treehtm.= $this->render($this->template, ['top'=>$this->notop, 'child'=>$this->child, 'template'=>$this->template, 'ischild'=>$this->ischild, 'notophead'=>true, 'inputname'=>$this->inputname, 'values'=>$this->values, 'key'=>$this->key]);
         }
 
         return $treehtm;

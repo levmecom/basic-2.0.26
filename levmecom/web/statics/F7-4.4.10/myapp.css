@@ -21,10 +21,11 @@ html.with-modal-preloader .view .page-content {overflow: auto;}
 .wd120 {width: 120px !important;}
 .wd150 {width: 150px !important;}
 .wd220 {width: 220px !important;}
+.wd270 {width: 270px !important;}
 tips {font-size: 11px !important;color: #ff0000d4 !important;}
 
 absx, absxn, absxg, absxk, absxb, absxy
-{font-size: 10px;display: inline-block;background: red;color: #fff;padding: 0px 3px;border-radius: 2px;}
+{font-size: 12px;display: inline-block;background: red;color: #fff;padding: 0px 3px;border-radius: 2px;transform: scale(0.8);}
 absxn {background: green !important;}
 absxg {background: gray !important;}
 absxk {background: black !important;}
@@ -77,6 +78,7 @@ ul.bgnone .mgrt10 {margin-top:10px;}
 .ck.ck-toolbar {border: none !important;}
 .ck.ck-placeholder::before, 
 .ck .ck-placeholder::before {color: rgba(0,0,0,0.15) !important;font-size: 13px !important;}
+.list .tdtitle img, .block.ck-content img {max-width: 100%;}
 
 /* Limit resizable panel width */
 .panel {min-width: 50px;max-width: 90vw;}
@@ -162,13 +164,33 @@ ul.bgnone .mgrt10 {margin-top:10px;}
 /* form */
 .has-error .item-input-info {position: absolute;top: 0;right: 20px;width: auto;color: red;line-height: 24px;}
 .has-error input, .has-error textarea {border:1px solid red;}
+.item-input-outline .item-input-wrap {margin-top: 2px !important;}
+.color-picker .page-content {min-width: 0 !important;width: calc(100% - 20px);}
+.icon.color-list-icon {
+    width: 30px;
+    height: 30px;
+    margin-top: 2px;
+    position: absolute;
+    margin-left: 2px;
+    border-radius: 3px;
+}
+input.color-input-rgba {padding-left: 35px !important;}
 
+.is-set-val .form-group {position: relative;}
+.is-set-val .form-control {width: 270px;}
+.is-set-val .form-group {border-bottom: 1px solid rgba(0,0,0,0.044);}
+.is-set-val .form-group.item-content {padding-bottom:7px;}
+.is-set-val .form-group .item-after {margin-left: 60px;}
+.is-set-val .hint-block {position: absolute;left: 330px;top: 0;}
 
-
-
-
-
-
+:root {--f7-treeview-children-offset: 15px;}
+.treeview-item-label {font-size: 12px;}
+.treebox {margin: 0;height: 45px;overflow: auto;}
+.treebox label {margin:0;}
+.treebox-checkbox {height: 140px;}
+.treebox .treeview-item-root {height: 20px;}
+.treebox .treeview-toggle {height: 16px;}
+.treebox.ht100 {height: 100% !important;}
 
 
 

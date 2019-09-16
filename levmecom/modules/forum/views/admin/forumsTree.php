@@ -11,7 +11,7 @@
 ?>
 
 <?php if (isset($notophead)) :?>
-    <li><table class="headt"><tr><td colspan="1000">丢失上级分类</td></tr></table></li>
+    <li><table class="headt"><tr><td colspan="1000">丢失上级版块</td></tr></table></li>
 <?php endif;?>
 
 <?php if (!empty($top)) { foreach ($top as $v) :?>
@@ -32,6 +32,7 @@
         </td>
         <td class="tab-center wd60"><input class="dorder setField" type="text" name="displayorder" opid="<?=$v['id']?>" value="<?=$v['displayorder']?>"></td>
         <td class="tab-center wd100"><?=$v['id']?></td>
+    <td class="tab-center wd60"><?=isset($child[$v['id']]) ? count($child[$v['id']]) : 0?></td>
         <td class="tab-center wd100"><?=$v['code']?></td>
         <td class="numeric-cell wd100"><?=$v['threads']?></td>
         <td class="tab-center wd60">

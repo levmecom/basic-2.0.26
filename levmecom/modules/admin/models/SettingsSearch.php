@@ -85,7 +85,7 @@ class SettingsSearch extends SettingsModel
             'addtime' => $this->addtime,
         ]);
 
-        $query->andFilterWhere(['like', 'moduleidentifier', $this->moduleidentifier])
+        $query->andFilterWhere([\Yii::$app->request->get('_qy') ? '=' : 'like', 'moduleidentifier', $this->moduleidentifier])
             ->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'placeholder', $this->placeholder])
             ->andFilterWhere(['like', 'inputname', $this->inputname])

@@ -83,7 +83,7 @@ class Threads extends \yii\db\ActiveRecord
         return $this->hasOne(Posts::className(), ['id'=>'id'])->select(['contents', 'id']);
     }
 
-    public function sendThread()
+    public function sendThread($uid = 0)
     {
         if (!$this->load(\Yii::$app->request->post(), '')) {
             return levHelpers::responseMsg(-4002, '请输入内容');
@@ -97,13 +97,17 @@ class Threads extends \yii\db\ActiveRecord
         if ($this->getIsNewRecord()) {
             try {
 
-                $this->fid = intval(\Yii::$app->request->post('fid')) ?: 1;
+                $this->fid = intval(\Yii::$app->request->post('fid'));
+                if (!$this->fid && \Yii::$app->request->post('code')) {
+                    $forumInfo = ForumForums::getForumByCode(levHelpers::stripTags(\Yii::$app->request->post('code')));
+                    $this->fid = $forumInfo ? $forumInfo['id'] : 1;
+                }
                 $this->pid = intval(\Yii::$app->request->post('pid'));
                 $this->address = $this->address ?: '';
                 $this->attach = $this->checkAttach($contents);
                 $this->uptime = time();
                 $this->addtime = time();
-                $this->uid = \Yii::$app->user->identity->getId();
+                $this->uid = $uid ?: \Yii::$app->user->identity->getId();
                 $this->textlen = strlen(levHelpers::stripTags($contents));
 
                 if (!$this->pid) { //发送

@@ -162,7 +162,7 @@ $this->blocks['pages'] = \yii\widgets\LinkPager::widget(['pagination' => $pages,
                 <?="<?php"?> foreach ($lists as $k => $v) : ?>
                     <tr>
 <?php if ($primaryKey) : ?>
-                        <td class="checkbox-cell">
+                        <td class="checkbox-cell tooltip-init" data-tooltip="<?="<?="?>$v['<?=$primaryKey?>']?>">
                             <label class="checkbox">
                                 <input name="ids[]" value="<?="<?="?> $v['<?=$primaryKey?>']?>" type="checkbox">
                                 <i class="icon-checkbox"></i>

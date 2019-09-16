@@ -14,6 +14,7 @@ namespace app\modules\ucenter\modules\registers\controllers;
 
 use app\modules\admin\behaviors\IsSuperAdmin;
 use app\modules\ucenter\modules\registers\models\UcenterRegisters;
+use levmecom\aalevme\levHelpers;
 use Yii;
 use yii\web\Controller;
 

@@ -11,6 +11,20 @@ use yii\helpers\StringHelper;
 
 class baseLevHelpers {
 
+    public static function stget($key, $identifier = '') {
+        $identifier = $identifier ?: Yii::$app->controller->module->getUniqueId();
+        $settings = json_decode(Yii::$app->cache->get('__settings__'), true);
+        if ($key === null) {
+            return !isset($settings[$identifier]) ? false : $settings[$identifier];
+        }else {
+            return !isset($settings[$identifier][$key]) ? false : $settings[$identifier][$key];
+        }
+    }
+
+    public static function arrv($key, $arr = [], $default = null) {
+        return isset($arr[$key]) ? $arr[$key] : ($default !== null ? $default : $key);
+    }
+
     /**
      * 例：$moduleUniqueId = '123/1234/12345';
      * return [

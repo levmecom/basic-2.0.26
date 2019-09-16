@@ -113,7 +113,11 @@ class DefaultController extends Controller
                 }
             }
         }
-        $dbsql = "CREATE DATABASE `$dbname` DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci";
+        if (\Yii::$app->db->charset =='utf8mb4') {
+            $dbsql = "CREATE DATABASE `$dbname` DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci";
+        }else {
+            $dbsql = "CREATE DATABASE `$dbname`";
+        }
         $query = ($mysqlmode == 'mysql') ? @mysql_query($dbsql) : $link->query($dbsql);
         try {
 

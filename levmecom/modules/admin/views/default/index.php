@@ -20,7 +20,7 @@ $userinfo = \app\modules\ucenter\widgets\Ucenter::userinfo();
         <div class="left">
             <a class="link tooltip-init panel-open" data-tooltip="开启/关闭侧滑栏"><i class="fa fa-bars" aria-hidden="true"></i></a>
             <a class="link tooltip-init" data-tooltip="后台首页" href="<?=Yii::$app->homeUrl?>admin"><i class="fa fa-home" aria-hidden="true"></i></a>
-            <a class="link tooltip-init openziframescreen" force="1" data-tooltip="全局设置" href="<?=Yii::$app->homeUrl?>admin/default/settings"><i class="fa fa-cog" aria-hidden="true"></i></a>
+            <a class="link tooltip-init toIframe" target="_iframe" data-tooltip="全局设置" href="<?=Yii::$app->homeUrl?>admin/settings"><i class="fa fa-cog" aria-hidden="true"></i></a>
             <a class="link tooltip-init toIframe" target="_iframe" data-tooltip="导航设置" href="<?=Yii::$app->homeUrl?>navigation/admin"><i class="fa fa-paper-plane" aria-hidden="true"></i></a>
             <a class="link tooltip-init toIframe" target="_iframe" data-tooltip="模块安装" href="<?=Yii::$app->homeUrl?>adminModules/admin"><i class="fa fa-th-large" aria-hidden="true"></i></a>
         </div>

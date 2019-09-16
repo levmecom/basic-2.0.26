@@ -18,11 +18,11 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
-        'assetManager' => [
-            'class' => 'yii\web\AssetManager',
-            'appendTimestamp' => YII_ENV_DEV,
-            'linkAssets' => true,
-        ],
+//        'assetManager' => [
+//            'class' => 'yii\web\AssetManager',
+//            //'appendTimestamp' => YII_ENV_DEV,
+//            //'linkAssets' => true,
+//        ],
         'urlManager' => require __DIR__ . '/urlManager.php',
 
 //        'view' => [//主题文件存在替换，不存在使用默认。
@@ -59,17 +59,20 @@ $config = [
         ],
         'redis' => [
             'class' => 'yii\redis\Connection',
-            'hostname' => 'localhost',
+            'hostname' => '127.0.0.1',
             'port' => 6379,
             'database' => 0,
         ],
-//        'session' => [
-//            'name' => 'redis_session',
-//            'class' => 'yii\redis\Session',
-//        ],
+        'session' => [
+            'name' => 'redis_session',
+            'class' => 'yii\redis\Session',
+        ],
         'cache' => [
+            //'class' => 'yii\caching\FileCache',
+            'class' => 'yii\redis\Cache',
+        ],
+        'cacheFile' => [
             'class' => 'yii\caching\FileCache',
-            //'class' => 'yii\redis\Cache',
         ],
         'user' => require __DIR__ . '/user.php',
         'errorHandler' => [

@@ -14,6 +14,7 @@
 /* @var $this \yii\web\View */
 
 use app\modules\adminModules\models\AdminModulesModel;
+use levmecom\aalevme\levHelpers;
 use yii\data\Pagination;
 use yii\helpers\Url;
 
@@ -91,6 +92,7 @@ $notinstalleds = \app\modules\adminModules\Module::getDirModulesIdentifier();
                     <th class="label-cell ellipsis">简短描述</th>
                     <th class="tab-center wd60">状态</th>
                     <th class="numeric-cell wd60">时间</th>
+                    <th class="tab-center wd60">设置</th>
                     <th class="actions-cell">操作</th>
                 </tr>
                 </thead>
@@ -123,15 +125,24 @@ $notinstalleds = \app\modules\adminModules\Module::getDirModulesIdentifier();
                         <td class="numeric-cell date tooltip-init" data-tooltip="<?=(!$v['uptime'] ?'-': '更新：'.Yii::$app->formatter->asDatetime($v['uptime'])),'<br>安装：'.Yii::$app->formatter->asDatetime($v['addtime'])?></p>">
                             <p><?=!$v['uptime'] ?'-': Yii::$app->formatter->asRelativeTime($v['uptime'])?></p>
                             <p><?=Yii::$app->formatter->asRelativeTime($v['addtime'])?></p>
+                        </td>
+                        <td class="tab-center wd60">
+                            <?php if (levHelpers::stget(null, $v['identifier'])) :?>
+                            <a href="<?=Url::toRoute(['/admin/default/settings', 'identifier'=>$v['identifier']])?>"><i class="fa fa-gear" aria-hidden="true"></i></a>
+                            <?php endif?>
+                        </td>
                         <td class="actions-cell">
                             <p>
                                 <a class="link" href="<?=Yii::$app->homeUrl,$v['identifier'],'/admin-install/update'?>"><absxn>更新</absxn></a>
                                 <a class="link" href="<?=Yii::$app->homeUrl,$v['identifier'],'/admin-install/reinstall'?>"><absxk>重装</absxk></a>
                             </p>
                             <p>
+                                <?php if (isset(Yii::$app->params['developing']) && Yii::$app->params['developing']) :?>
+                                    <a class="link" href="<?=Url::toRoute(['/admin/settings', 'srh'=>['moduleidentifier'=>$v['identifier']], '_qy'=>$v['identifier']])?>"><absxy>设计</absxy></a>
+                                <?php endif;?>
                                 <a class="link" href="<?=Yii::$app->homeUrl,$v['identifier'],'/admin-install'?>"><absx>安装</absx></a>
                                 <a class="link" href="<?=Yii::$app->homeUrl,$v['identifier'],'/admin-install/uninstall'?>"><absxg>卸载</absxg></a>
-                            </p>
+                            </>
                         </td>
                     </tr>
                 <?php endforeach;?>
