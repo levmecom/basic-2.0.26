@@ -63,13 +63,13 @@ $config = [
             'port' => 6379,
             'database' => 0,
         ],
-        'session' => [
-            'name' => 'redis_session',
-            'class' => 'yii\redis\Session',
-        ],
+//        'session' => [
+//            'name' => 'redis_session',
+//            'class' => 'yii\redis\Session',
+//        ],
         'cache' => [
-            //'class' => 'yii\caching\FileCache',
-            'class' => 'yii\redis\Cache',
+            'class' => 'yii\caching\FileCache',
+            //'class' => 'yii\redis\Cache',
         ],
         'cacheFile' => [
             'class' => 'yii\caching\FileCache',
