@@ -214,10 +214,24 @@ class BatchQueryResult extends BaseObject implements \Iterator
             return $this->db->driverName;
         }
 
-        if (isset($this->_batch[0]->db->driverName)) {
-            return $this->_batch[0]->db->driverName;
+        if (!empty($this->_batch)) {
+            $key = array_keys($this->_batch)[0];
+            if (isset($this->_batch[$key]->db->driverName)) {
+                return $this->_batch[$key]->db->driverName;
+            }
         }
 
         return null;
+    }
+
+    /**
+     * Unserialization is disabled to prevent remote code execution in case application
+     * calls unserialize() on user input containing specially crafted string.
+     * @see CVE-2020-15148
+     * @since 2.0.38
+     */
+    public function __wakeup()
+    {
+        throw new \BadMethodCallException('Cannot unserialize ' . __CLASS__);
     }
 }

@@ -93,6 +93,8 @@ use yii\helpers\ArrayHelper;
  *
  * @property array $definitions The list of the object definitions or the loaded shared objects (type or ID =>
  * definition or instance). This property is read-only.
+ * @property bool $resolveArrays Whether to attempt to resolve elements in array dependencies. This property
+ * is write-only.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
@@ -120,6 +122,10 @@ class Container extends Component
      * is associated with a list of constructor parameter types or default values.
      */
     private $_dependencies = [];
+    /**
+     * @var bool whether to attempt to resolve elements in array dependencies
+     */
+    private $_resolveArrays = false;
 
 
     /**
@@ -137,7 +143,7 @@ class Container extends Component
      * In this case, the constructor parameters and object configurations will be used
      * only if the class is instantiated the first time.
      *
-     * @param string $class the class name or an alias name (e.g. `foo`) that was previously registered via [[set()]]
+     * @param string|Instance $class the class Instance, name or an alias name (e.g. `foo`) that was previously registered via [[set()]]
      * or [[setSingleton()]].
      * @param array $params a list of constructor parameter values. The parameters should be provided in the order
      * they appear in the constructor declaration. If you want to skip some parameters, you should index the remaining
@@ -149,6 +155,9 @@ class Container extends Component
      */
     public function get($class, $params = [], $config = [])
     {
+        if ($class instanceof Instance) {
+            $class = $class->id;
+        }
         if (isset($this->_singletons[$class])) {
             // singleton
             return $this->_singletons[$class];
@@ -323,9 +332,15 @@ class Container extends Component
             return ['class' => $class];
         } elseif (is_string($definition)) {
             return ['class' => $definition];
+        } elseif ($definition instanceof Instance) {
+            return ['class' => $definition->id];
         } elseif (is_callable($definition, true) || is_object($definition)) {
             return $definition;
         } elseif (is_array($definition)) {
+            if (!isset($definition['class']) && isset($definition['__class'])) {
+                $definition['class'] = $definition['__class'];
+                unset($definition['__class']);
+            }
             if (!isset($definition['class'])) {
                 if (strpos($class, '\\') !== false) {
                     $definition['class'] = $class;
@@ -363,6 +378,13 @@ class Container extends Component
     {
         /* @var $reflection ReflectionClass */
         list($reflection, $dependencies) = $this->getDependencies($class);
+
+        if (isset($config['__construct()'])) {
+            foreach ($config['__construct()'] as $index => $param) {
+                $dependencies[$index] = $param;
+            }
+            unset($config['__construct()']);
+        }
 
         foreach ($params as $index => $param) {
             $dependencies[$index] = $param;
@@ -441,7 +463,11 @@ class Container extends Component
                 } elseif ($param->isDefaultValueAvailable()) {
                     $dependencies[] = $param->getDefaultValue();
                 } else {
-                    $c = $param->getClass();
+                    if (PHP_VERSION_ID >= 80000) {
+                        $c = $param->getType();
+                    } else {
+                        $c = $param->getClass();
+                    }
                     $dependencies[] = Instance::of($c === null ? null : $c->getName());
                 }
             }
@@ -471,6 +497,8 @@ class Container extends Component
                     $class = $reflection->getName();
                     throw new InvalidConfigException("Missing required parameter \"$name\" when instantiating \"$class\".");
                 }
+            } elseif ($this->_resolveArrays && is_array($dependency)) {
+                $dependencies[$index] = $this->resolveDependencies($dependency, $reflection);
             }
         }
 
@@ -630,7 +658,7 @@ class Container extends Component
     public function setDefinitions(array $definitions)
     {
         foreach ($definitions as $class => $definition) {
-            if (is_array($definition) && count($definition) === 2 && array_values($definition) === $definition) {
+            if (is_array($definition) && count($definition) === 2 && array_values($definition) === $definition && is_array($definition[1])) {
                 $this->set($class, $definition[0], $definition[1]);
                 continue;
             }
@@ -659,5 +687,14 @@ class Container extends Component
 
             $this->setSingleton($class, $definition);
         }
+    }
+
+    /**
+     * @param bool $value whether to attempt to resolve elements in array dependencies
+     * @since 2.0.37
+     */
+    public function setResolveArrays($value)
+    {
+        $this->_resolveArrays = (bool) $value;
     }
 }

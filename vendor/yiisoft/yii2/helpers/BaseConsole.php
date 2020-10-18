@@ -7,6 +7,7 @@
 
 namespace yii\helpers;
 
+use Yii;
 use yii\console\Markdown as ConsoleMarkdown;
 use yii\base\Model;
 
@@ -341,6 +342,17 @@ class BaseConsole
     public static function ansiStrlen($string)
     {
         return mb_strlen(static::stripAnsiFormat($string));
+    }
+
+    /**
+     * Returns the width of the string without ANSI color codes.
+     * @param string $string the string to measure
+     * @return int the width of the string not counting ANSI format characters
+     * @since 2.0.36
+     */
+    public static function ansiStrwidth($string)
+    {
+        return mb_strwidth(static::stripAnsiFormat($string), Yii::$app->charset);
     }
 
     /**
@@ -897,7 +909,7 @@ class BaseConsole
     /**
      * Starts display of a progress bar on screen.
      *
-     * This bar will be updated by [[updateProgress()]] and my be ended by [[endProgress()]].
+     * This bar will be updated by [[updateProgress()]] and may be ended by [[endProgress()]].
      *
      * The following example shows a simple usage of a progress bar:
      *
@@ -911,6 +923,7 @@ class BaseConsole
      * ```
      *
      * Git clone like progress (showing only status information):
+     *
      * ```php
      * Console::startProgress(0, 1000, 'Counting objects: ', false);
      * for ($n = 1; $n <= 1000; $n++) {
