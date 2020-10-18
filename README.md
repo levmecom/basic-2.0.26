@@ -3,4 +3,4 @@
 
 <a href="https://github.com/levmecom/basic-2.0.26/releases/tag/2038">点此下载安装</a>
 
-<a href="http://demo.levme.com">查看演示</a>
+<a href="http://appstore.levme.com/appstore/default/base">查看演示</a>
